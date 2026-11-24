@@ -25,6 +25,8 @@ import {
   Crown,
   AlertTriangle,
   X,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 
 function getInitials(name = "") {
@@ -139,6 +141,7 @@ export function TutorPortal({
   const [autoLoginTried, setAutoLoginTried] = useState(false);
 
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [unlockError, setUnlockError] = useState("");
   const [unlocking, setUnlocking] = useState(false);
 
@@ -308,15 +311,28 @@ export function TutorPortal({
               value={tutorEmail}
               className="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 bg-slate-50 text-slate-500 text-sm"
             />
-            <input
-              type="password"
-              required
-              placeholder="Tu contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
+
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                required
+                placeholder="Tu contraseña"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full pl-3.5 pr-10 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                aria-label={showPassword ? "Ocultar contraseña" : "Ver contraseña"}
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-md text-slate-400 hover:text-slate-600 cursor-pointer"
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+
             {unlockError && <p className="text-xs text-red-600">{unlockError}</p>}
+
             <button
               type="submit"
               disabled={unlocking}

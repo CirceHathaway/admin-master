@@ -5,9 +5,9 @@ import { useGuests } from "../hooks/useGuests";
 import { StatsCards } from "./StatsCards";
 import { GuestTable } from "./GuestTable";
 import { GuestModal } from "./GuestModal";
-import { Lock, LogOut, Settings, AlertCircle, Eye } from "lucide-react";
+import { Lock, LogOut, Settings, AlertCircle, Eye, EyeOff } from "lucide-react";
 
-export function EventWorkspace({ activeEvent, onEditEvent, onOpenTutorView}) {
+export function EventWorkspace({ activeEvent, onEditEvent, onOpenTutorView }) {
   const [eventUser, setEventUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [initError, setInitError] = useState(null);
@@ -15,6 +15,7 @@ export function EventWorkspace({ activeEvent, onEditEvent, onOpenTutorView}) {
   // Estado del login del Firebase hijo
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState("");
   const [loggingIn, setLoggingIn] = useState(false);
 
@@ -115,17 +116,30 @@ export function EventWorkspace({ activeEvent, onEditEvent, onOpenTutorView}) {
             placeholder="Correo de admin en este Firebase"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm"
+            className="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
-          <input
-            type="password"
-            required
-            placeholder="Contraseña"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm"
-          />
+
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              required
+              placeholder="Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full pl-3 pr-10 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              aria-label={showPassword ? "Ocultar contraseña" : "Ver contraseña"}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 rounded-md text-slate-400 hover:text-slate-600 cursor-pointer"
+            >
+              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            </button>
+          </div>
+
           {loginError && <p className="text-xs text-red-600">{loginError}</p>}
+
           <button
             type="submit"
             disabled={loggingIn}
@@ -177,7 +191,7 @@ export function EventWorkspace({ activeEvent, onEditEvent, onOpenTutorView}) {
           >
             <Eye className="w-3.5 h-3.5" />
             Vista Tutor
-        </button>
+          </button>
         </div>
       </div>
 
